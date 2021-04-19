@@ -1,5 +1,6 @@
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 public class Baralho {
     private ArrayList<Cartas> cartas;
@@ -8,54 +9,90 @@ public class Baralho {
         this.cartas = new ArrayList<Cartas>();
     }
 
-    // criando baralho, 52 cartas
     public void criandoBaralho() {
         for (Naipe naipeCarta : Naipe.values()) {
             for (ValorCarta valorCarta : ValorCarta.values()) {
-                // adiciona nova carta ao montante
                 this.cartas.add(new Cartas(naipeCarta, valorCarta));
             }
         }
     }
 
-     // substituir pelo metodo shuffle do professor
-    // java.utils.Collection.shuffle
+    public void setDificuldade(int nivel) throws InterruptedException {
+        switch (nivel) {
+        case 1:
+            System.out.println("Dificuldade escolhida: 1 baralho.");
+            TimeUnit.SECONDS.sleep(2);
+            criandoBaralho();
+            break;
+        case 2:
+            System.out.println("Dificuldade escolhida: 2 baralhos.");
+            TimeUnit.SECONDS.sleep(2);
+            criandoBaralho();
+            criandoBaralho();
+            break;
+        case 3:
+            System.out.println("Dificuldade escolhida: 3 baralhos.");
+            TimeUnit.SECONDS.sleep(2);
+            criandoBaralho();
+            criandoBaralho();
+            criandoBaralho();
+            break;
+        case 4:
+            System.out.println("Dificuldade escolhida: 4 baralhos.");
+            TimeUnit.SECONDS.sleep(2);
+            criandoBaralho();
+            criandoBaralho();
+            criandoBaralho();
+            criandoBaralho();
+        case 5:
+            System.out.println("Dificuldade escolhida: 5 baralhos.");
+            TimeUnit.SECONDS.sleep(2);
+            criandoBaralho();
+            criandoBaralho();
+            criandoBaralho();
+            criandoBaralho();
+            criandoBaralho();
+        case 6:
+            System.out.println("Dificuldade escolhida: 6 baralhos.");
+            TimeUnit.SECONDS.sleep(2);
+            criandoBaralho();
+            criandoBaralho();
+            criandoBaralho();
+            criandoBaralho();
+            criandoBaralho();
+            criandoBaralho();
+        case 7:
+            System.out.println("Dificuldade escolhida: 7 baralhos.");
+            TimeUnit.SECONDS.sleep(2);
+            criandoBaralho();
+            criandoBaralho();
+            criandoBaralho();
+            criandoBaralho();
+            criandoBaralho();
+            criandoBaralho();
+            criandoBaralho();
+        }
+    }
 
     public void embaralhar() {
-        // segundo embaralhamento
-        ArrayList<Cartas> tempBaralho = new ArrayList<Cartas>();
-        Random random = new Random();
-        int randomCarta = 0;
-        int randomValorAnterior = this.cartas.size();
-        for (int i = 0; i < randomValorAnterior; i++) {
-            randomCarta = random.nextInt((this.cartas.size() - 1 - 0) + 1) + 0;
-            tempBaralho.add(this.cartas.get(randomCarta));
-            this.cartas.remove(randomCarta);
-        }
-
-        this.cartas = tempBaralho;
+        Collections.shuffle(cartas);
     }
 
     public void removerCarta(int i) {
         this.cartas.remove(i);
     }
 
-     // substituir pelo método POP
-
-    public Cartas getCarta(int i){
-		return this.cartas.get(i);
-	}
-
-     // substituir pelo método push
+    public Cartas getCarta(int i) {
+        return this.cartas.get(i);
+    }
 
     public void adicionarCarta(Cartas adicionaCarta) {
         this.cartas.add(adicionaCarta);
     }
 
-    // tira carta topo do baralho
-    public void tira(Baralho comingFrom) {
-        this.cartas.add(comingFrom.getCarta(0));
-        comingFrom.removerCarta(0);
+    public void tira(Baralho baralho) {
+        this.cartas.add(baralho.getCarta(0));
+        baralho.removerCarta(0);
     }
 
     public String toString() {
@@ -68,27 +105,24 @@ public class Baralho {
         return qualCartaSaiu;
     }
 
-    public void moverTodasCartas(Baralho moveTo){
+    public void moverTodasCartas(Baralho moveTo) {
         int tamanhoBaralho = this.cartas.size();
-        for(int i = 0; i < tamanhoBaralho; i++){
+        for (int i = 0; i < tamanhoBaralho; i++) {
             moveTo.adicionarCarta(this.getCarta(i));
         }
-        for(int i=0; i < tamanhoBaralho; i++){
+        for (int i = 0; i < tamanhoBaralho; i++) {
             this.removerCarta(0);
         }
     }
 
-    public int tamanhoBaralho() {
+    public int getTamanhoBaralho() {
         return this.cartas.size();
     }
 
-    // Calculate the value of deck
     public int valorCartas() {
         int valorTotal = 0;
         int as = 0;
-        // For every card in the deck
         for (Cartas aCard : this.cartas) {
-            // Switch of possible values
             switch (aCard.getValorCarta()) {
             case DOIS:
                 valorTotal += 2;
@@ -131,19 +165,13 @@ public class Baralho {
                 break;
             }
         }
-        // Determine the total current value with aces
-        // Aces worth 11 or 1 - if 11 would go over 21 make it worth 1
         for (int i = 0; i < as; i++) {
-            // If they're already at over 10 getting an ace valued at 11 would put them up
-            // to 22, so make ace worth one
             if (valorTotal > 10) {
                 valorTotal += 1;
             } else {
                 valorTotal += 11;
             }
         }
-
-        // Return
         return valorTotal;
     }
 }
