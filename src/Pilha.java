@@ -16,7 +16,6 @@ public class Pilha {
     }
 
     public int tamanho() {
-        // is
         if (this.pilhaVazia()) {
             return 0;
         }
@@ -24,7 +23,6 @@ public class Pilha {
     }
 
     public Cartas exibeUltimoValor() {
-        // top
         if (this.pilhaVazia()) {
             return null;
         }
@@ -32,7 +30,6 @@ public class Pilha {
     }
 
     public Cartas desempilhar() {
-        // pop
         if (pilhaVazia()) {
             return null;
         }
@@ -43,7 +40,6 @@ public class Pilha {
     }
 
     public void empilhar(Cartas valor) {
-        // push
         if (this.posicaoPilha < this.pilha.length - 1) {
             this.pilha[++posicaoPilha] = valor;
         }

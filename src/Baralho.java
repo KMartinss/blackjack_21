@@ -113,7 +113,7 @@ public class Baralho {
         int i = 0;
         Pilha pilhaAux = new Pilha();
         int tam = this.cartas.tamanho();
-        for(i = 0; i < tam; i++) {
+        for (i = 0; i < tam; i++) {
             pilhaAux.empilhar(this.cartas.desempilhar());
             Cartas aCartas = pilhaAux.exibeUltimoValor();
             qualCartaSaiu += "\n" + aCartas.toString();
@@ -142,7 +142,7 @@ public class Baralho {
         int as = 0;
         Pilha pilhaAux = new Pilha();
         int tam = this.cartas.tamanho();
-        for(int i = 0; i < tam; i++) {
+        for (int i = 0; i < tam; i++) {
             pilhaAux.empilhar(this.cartas.desempilhar());
         }
         tam = pilhaAux.tamanho();
