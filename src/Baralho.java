@@ -3,16 +3,16 @@ import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 public class Baralho {
-    private ArrayList<Cartas> cartas;
+    private Pilha cartas;
 
     public Baralho() {
-        this.cartas = new ArrayList<Cartas>();
+        this.cartas = new Pilha();
     }
 
     public void criandoBaralho() {
         for (Naipe naipeCarta : Naipe.values()) {
             for (ValorCarta valorCarta : ValorCarta.values()) {
-                this.cartas.add(new Cartas(naipeCarta, valorCarta));
+                this.cartas.empilhar(new Cartas(naipeCarta, valorCarta));
             }
         }
     }
@@ -44,6 +44,7 @@ public class Baralho {
             criandoBaralho();
             criandoBaralho();
             criandoBaralho();
+            break;
         case 5:
             System.out.println("Dificuldade escolhida: 5 baralhos.");
             TimeUnit.SECONDS.sleep(2);
@@ -52,6 +53,7 @@ public class Baralho {
             criandoBaralho();
             criandoBaralho();
             criandoBaralho();
+            break;
         case 6:
             System.out.println("Dificuldade escolhida: 6 baralhos.");
             TimeUnit.SECONDS.sleep(2);
@@ -61,6 +63,7 @@ public class Baralho {
             criandoBaralho();
             criandoBaralho();
             criandoBaralho();
+            break;
         case 7:
             System.out.println("Dificuldade escolhida: 7 baralhos.");
             TimeUnit.SECONDS.sleep(2);
@@ -71,59 +74,82 @@ public class Baralho {
             criandoBaralho();
             criandoBaralho();
             criandoBaralho();
+            break;
         }
     }
 
     public void embaralhar() {
-        Collections.shuffle(cartas);
+        ArrayList<Cartas> listaCartas = new ArrayList<Cartas>();
+        int tam = this.cartas.tamanho();
+        for (int i = 0; i < tam; i++) {
+            listaCartas.add(this.cartas.desempilhar());
+        }
+
+        Collections.shuffle(listaCartas);
+        for (int i = 0; i < listaCartas.size(); i++) {
+            this.cartas.empilhar(listaCartas.get(i));
+        }
     }
 
-    public void removerCarta(int i) {
-        this.cartas.remove(i);
+    public void removerCarta() {
+        this.cartas.desempilhar();
     }
 
-    public Cartas getCarta(int i) {
-        return this.cartas.get(i);
+    public Cartas getCarta() {
+        return this.cartas.exibeUltimoValor();
     }
 
     public void adicionarCarta(Cartas adicionaCarta) {
-        this.cartas.add(adicionaCarta);
+        this.cartas.empilhar(adicionaCarta);
     }
 
     public void tira(Baralho baralho) {
-        this.cartas.add(baralho.getCarta(0));
-        baralho.removerCarta(0);
+        this.cartas.empilhar(baralho.getCarta());
+        baralho.removerCarta();
     }
 
     public String toString() {
         String qualCartaSaiu = "";
         int i = 0;
-        for (Cartas aCartas : this.cartas) {
+        Pilha pilhaAux = new Pilha();
+        int tam = this.cartas.tamanho();
+        for(i = 0; i < tam; i++) {
+            pilhaAux.empilhar(this.cartas.desempilhar());
+            Cartas aCartas = pilhaAux.exibeUltimoValor();
             qualCartaSaiu += "\n" + aCartas.toString();
-            i++;
+        }
+        tam = pilhaAux.tamanho();
+        for (i = 0; i < tam; i++) {
+            this.cartas.empilhar(pilhaAux.desempilhar());
         }
         return qualCartaSaiu;
     }
 
     public void moverTodasCartas(Baralho moveTo) {
-        int tamanhoBaralho = this.cartas.size();
+        int tamanhoBaralho = this.cartas.tamanho();
         for (int i = 0; i < tamanhoBaralho; i++) {
-            moveTo.adicionarCarta(this.getCarta(i));
-        }
-        for (int i = 0; i < tamanhoBaralho; i++) {
-            this.removerCarta(0);
+            moveTo.adicionarCarta(this.getCarta());
+            this.removerCarta();
         }
     }
 
     public int getTamanhoBaralho() {
-        return this.cartas.size();
+        return this.cartas.tamanho();
     }
 
     public int valorCartas() {
         int valorTotal = 0;
         int as = 0;
-        for (Cartas aCard : this.cartas) {
-            switch (aCard.getValorCarta()) {
+        Pilha pilhaAux = new Pilha();
+        int tam = this.cartas.tamanho();
+        for(int i = 0; i < tam; i++) {
+            pilhaAux.empilhar(this.cartas.desempilhar());
+        }
+        tam = pilhaAux.tamanho();
+        for (int i = 0; i < tam; i++) {
+            Cartas aCartas = pilhaAux.exibeUltimoValor();
+            this.cartas.empilhar(pilhaAux.desempilhar());
+            switch (aCartas.getValorCarta()) {
             case DOIS:
                 valorTotal += 2;
                 break;
